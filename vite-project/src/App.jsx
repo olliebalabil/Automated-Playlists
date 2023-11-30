@@ -23,6 +23,7 @@ let name = month[d.getMonth()];
     redirectUri: REDIRECT_URI
   })
   useEffect(() => {
+    console.log(name)
     const hash = window.location.hash
     let token = window.localStorage.getItem("token")
 
@@ -54,7 +55,7 @@ let name = month[d.getMonth()];
 
   const addPlaylist = () => {
     let playlistId = ""
-    spotifyApi.createPlaylist(month, { "description": `My top 50 songs from ${month}`, "public": false })
+    spotifyApi.createPlaylist(name, { "description": `My top 50 songs from ${name}`, "public": false })
       .then(function (response) {
         console.log("created playlist")
         playlistId = response.body.id;
