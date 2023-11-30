@@ -6,6 +6,10 @@ import SpotifyWebApi from "spotify-web-api-node"
 import axios from "axios"
 
 function App() {
+  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+const d = new Date();
+let name = month[d.getMonth()];
   const [token, setToken] = useState('')
   const [tracks, setTracks] = useState([])
   const CLIENT_ID = '6439b128698840e7b670c31bbfb2a261'
@@ -50,7 +54,7 @@ function App() {
 
   const addPlaylist = () => {
     let playlistId = ""
-    spotifyApi.createPlaylist("November", { "description": "Top songs from Novemeber", "public": false })
+    spotifyApi.createPlaylist(month, { "description": `My top 50 songs from ${month}`, "public": false })
       .then(function (response) {
         console.log("created playlist")
         playlistId = response.body.id;
