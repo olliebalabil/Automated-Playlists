@@ -9,7 +9,7 @@ function App() {
   const [token, setToken] = useState('')
   const [tracks, setTracks] = useState([])
   const CLIENT_ID = '6439b128698840e7b670c31bbfb2a261'
-  const REDIRECT_URI = 'http://localhost:5173'
+  const REDIRECT_URI = 'https://automate-playlists.onrender.com/'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
   const RESPONSE_TYPE = 'token'
   const SCOPE = 'user-top-read playlist-modify-public playlist-modify-private user-read-private user-read-email'
