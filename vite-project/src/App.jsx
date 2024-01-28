@@ -61,7 +61,7 @@ let name = month[d.getMonth()];
         console.log("created playlist")
         playlistId = response.body.id;
 
-        axios.get(`https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=${number}`, {
+        axios.get("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=30", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
