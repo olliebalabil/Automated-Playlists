@@ -55,7 +55,8 @@ let name = month[d.getMonth()];
 
   const addPlaylist = () => {
     let playlistId = ""
-    spotifyApi.createPlaylist(name, { "description": `My top 50 songs from ${name}`, "public": false })
+    let number = 30
+    spotifyApi.createPlaylist(name, { "description": `My top ${number} songs from ${name}`, "public": false })
       .then(function (response) {
         console.log("created playlist")
         playlistId = response.body.id;
@@ -66,7 +67,7 @@ let name = month[d.getMonth()];
           }
         })
           .then(function (response) {
-            spotifyApi.addTracksToPlaylist(playlistId,response.data.items.map(el=>el.uri))
+            spotifyApi.addTracksToPlaylist(playlistId,response.data.items.map(el=>el.uri).slice(0,number))
           })
           .catch(function (err) {
             console.error({ "error": err });
