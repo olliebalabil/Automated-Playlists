@@ -61,13 +61,13 @@ let name = month[d.getMonth()];
         console.log("created playlist")
         playlistId = response.body.id;
 
-        axios.get("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50", {
+        axios.get(`https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=${number}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
           .then(function (response) {
-            spotifyApi.addTracksToPlaylist(playlistId,response.data.items.map(el=>el.uri).slice(0,number))
+            spotifyApi.addTracksToPlaylist(playlistId,response.data.items.map(el=>el.uri))
           })
           .catch(function (err) {
             console.error({ "error": err });
