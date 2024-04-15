@@ -12,7 +12,7 @@ const d = new Date();
 let name = month[d.getMonth()];
   const [token, setToken] = useState('')
   const [tracks, setTracks] = useState([])
-  const [message,setMessage] = useState("Click the button to create a playlist of your top songs this month")
+  const [message,setMessage] = useState("Click the button to create a playlist of your top songs this month!")
   const CLIENT_ID = '6439b128698840e7b670c31bbfb2a261'
   const REDIRECT_URI = 'https://automate-playlists.onrender.com/'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
@@ -87,11 +87,15 @@ let name = month[d.getMonth()];
   }
   return (
     <>
+
+    <div className="buttons">
+
       {sessionStorage.getItem("token")? 
       <button onClick={()=>{sessionStorage.removeItem("token")}}>Logout</button>
       :
       <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login to Spotify</a>}
       <button onClick={addPlaylist}>Add Playlist</button>
+      </div>
       <h2>{message}</h2>
 
     </>
