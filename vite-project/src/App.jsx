@@ -87,8 +87,10 @@ let name = month[d.getMonth()];
   }
   return (
     <>
-      {sessionStorage.getItem("token")? <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login to Spotify</a>}
-      :<button onClick={()=>{sessionStorage.removeItem("token")}>Logout</button>
+      {sessionStorage.getItem("token")? 
+      <button onClick={()=>{sessionStorage.removeItem("token")}}>Logout</button>
+      :
+      <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login to Spotify</a>}
       <button onClick={addPlaylist}>Add Playlist</button>
       <h2>{message}</h2>
 
