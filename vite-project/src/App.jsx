@@ -12,6 +12,7 @@ const d = new Date();
 let name = month[d.getMonth()];
   const [token, setToken] = useState('')
   const [tracks, setTracks] = useState([])
+  const [message,setMessage] = useState("Click the button to create a playlist of your top songs this month")
   const CLIENT_ID = '6439b128698840e7b670c31bbfb2a261'
   const REDIRECT_URI = 'https://automate-playlists.onrender.com/'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
@@ -25,27 +26,27 @@ let name = month[d.getMonth()];
   useEffect(() => {
     console.log(name)
     const hash = window.location.hash
-    let token = window.localStorage.getItem("token")
+    let token = window.sessionStorage.getItem("token")
 
     if (!token && hash) {
       token = hash.substring(1).split("&").find(el => el.startsWith("access_token")).split("=")[1]
       window.location.hash = ''
-      window.localStorage.setItem("token", token)
+      window.sessionStorage.setItem("token", token)
     }
     setToken(token)
 
   }, [])
   useEffect(() => {
     if (token) {
-      spotifyApi.setAccessToken(localStorage.getItem("token"))
+      spotifyApi.setAccessToken(sessionStorage.getItem("token"))
 
       axios.get("https://api.spotify.com/v1/me", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`
         }
       })
         .then((response) => {
-          window.localStorage.setItem("user_id", response.data.id)
+          window.sessionStorage.setItem("user_id", response.data.id)
         })
         .catch((err) => {
           console.error(err.message)
@@ -63,14 +64,22 @@ let name = month[d.getMonth()];
 
         axios.get("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=30", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
           }
         })
           .then(function (response) {
             spotifyApi.addTracksToPlaylist(playlistId,response.data.items.map(el=>el.uri))
+            setMessage("Playlist created!")
+            setTimeout(()=>{
+              setMessage("")
+            },5000)
           })
           .catch(function (err) {
             console.error({ "error": err });
+              setMessage("An error occured. Try again.")
+            setTimeout(()=>{
+              setMessage("")
+            },5000)
           });
           
       })
@@ -78,9 +87,10 @@ let name = month[d.getMonth()];
   }
   return (
     <>
-      <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login to Spotify</a>
+      {sessionStorage.getItem("token")? <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`}>Login to Spotify</a>}
+      :<button onClick={()=>{sessionStorage.removeItem("token")}>Logout</button>
       <button onClick={addPlaylist}>Add Playlist</button>
-
+      <h2>{message}</h2>
 
     </>
   )
